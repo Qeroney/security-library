@@ -22,11 +22,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public JwtAuthenticationFilter authenticationFilter(JwtService service) {
         return new JwtAuthenticationFilter(service);
     }
@@ -37,7 +32,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthService authService(JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager manager) {
-        return new AuthServiceImpl(passwordEncoder, jwtService, manager);
+    public AuthService authService(){
+        return new AuthServiceImpl();
     }
 }

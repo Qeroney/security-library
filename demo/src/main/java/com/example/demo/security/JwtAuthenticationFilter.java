@@ -18,20 +18,16 @@ import java.io.IOException;
 
 import java.util.stream.Collectors;
 
-@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
+    private final JwtService jwtService;
+
     public JwtAuthenticationFilter(JwtService jwtService) {
         this.jwtService = jwtService;
     }
 
-    private final JwtService jwtService;
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         CustomUser user = null;
         String jwt = null;
@@ -39,15 +35,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwt = authHeader.substring(7);
             user = new CustomUser();
             user.setId(jwtService.extractId(jwt));
-            user.setEmail(jwtService.extractUsername(jwt));
+            user.setUsername(jwtService.extractUsername(jwt));
             user.setRole(Role.valueOf(jwtService.getRoles(jwt).get(0)));
         }
         if (user != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     user,
                     null,
-                    jwtService.getRoles(jwt).stream().map(SimpleGrantedAuthority::new)
-                              .collect(Collectors.toList())
+                    jwtService.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
             );
             SecurityContextHolder.getContext().setAuthentication(token);
         }
