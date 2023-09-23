@@ -1,6 +1,6 @@
 package com.example.demo.security;
 
-import com.example.demo.user.CustomUser;
+import com.example.demo.user.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,22 +8,17 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.time.Duration;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Service
 public class JwtService {
 
     @Value("${jwt.secret}")
     private String secret;
 
-    public String generateToken(CustomUser userDetails) {
+    public String generateToken(CustomUserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
 
         List<String> roleList = userDetails.getAuthorities().stream()

@@ -1,13 +1,11 @@
 package com.example.demo.security;
 
-import com.example.demo.user.CustomUser;
+import com.example.demo.user.CustomUserDetails;
 import com.example.demo.user.Role;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -29,11 +27,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        CustomUser user = null;
+        CustomUserDetails user = null;
         String jwt = null;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-            user = new CustomUser();
+            user = new CustomUserDetails();
             user.setId(jwtService.extractId(jwt));
             user.setUsername(jwtService.extractUsername(jwt));
             user.setRole(Role.valueOf(jwtService.getRoles(jwt).get(0)));
