@@ -5,12 +5,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-public class CustomUser implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private UUID id;
     private String username;
@@ -22,9 +21,9 @@ public class CustomUser implements UserDetails {
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
-    public CustomUser() {}
+    public CustomUserDetails() {}
 
-    private CustomUser(UUID id, String username, String password, Role role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+    private CustomUserDetails(UUID id, String username, String password, Role role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -161,8 +160,8 @@ public class CustomUser implements UserDetails {
             return this;
         }
 
-        public CustomUser build() {
-            return new CustomUser(id, username, password, role, isAccountNonExpired, isAccountNonLocked, isCredentialsNonExpired, isEnabled);
+        public CustomUserDetails build() {
+            return new CustomUserDetails(id, username, password, role, isAccountNonExpired, isAccountNonLocked, isCredentialsNonExpired, isEnabled);
         }
     }
 }

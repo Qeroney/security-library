@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@Import(AuthenticationConfiguration.class)
+@Import({AuthenticationConfiguration.class, WebSecurityConfig.class})
 public class SecurityConfig {
 
     @Bean
